@@ -13,6 +13,7 @@ const typeDefs = `
     id: ID!
     title: String!
     body: String!
+    published: Boolean!
 
   }
 
@@ -41,6 +42,7 @@ const resolvers = {
         id: "456",
         title: "my biking adventure",
         body: "The day I bought my bike, I ended up having quite an adventure...",
+        published: false,
       };
     },
   },
