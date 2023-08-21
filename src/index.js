@@ -1,12 +1,18 @@
 import { GraphQLServer } from "graphql-yoga";
 
+//Scalar typer
+
 //type definition (schema)
 const typeDefs = `
   type Query {
-    hello: String!
+   me: User!
+  }
+
+  type User {
+    id: ID!
     name: String!
-    location: String!
-    bio: String!
+    email: String!
+    age: Int
   }
 `;
 
@@ -14,17 +20,13 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    hello() {
-      return "This is my first query!";
-    },
-    name() {
-      return "Leah";
-    },
-    location() {
-      return "London";
-    },
-    bio() {
-      return "Junior developer, excited to get started!";
+    me() {
+      return {
+        id: "123",
+        name: "Jenny",
+        email: "jenny.me.com",
+        age: null,
+      };
     },
   },
 };
