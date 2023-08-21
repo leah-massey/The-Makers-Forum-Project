@@ -7,6 +7,7 @@ const typeDefs = `
   type Query {
     add(a: Float!, b: Float!): Float!
     greeting(name: String, position: String): String!
+    grades: [Int!]!
     me: User!
     post: Post!
   }
@@ -33,6 +34,9 @@ const resolvers = {
   Query: {
     add(parent, args, ctx, info) {
       return args.a + args.b;
+    },
+    grades(parent, args, ctx, info) {
+      return [90, 85, 40];
     },
     greeting(parent, args, ctx, info) {
       if (args.name && args.position) {
