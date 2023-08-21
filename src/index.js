@@ -1,10 +1,11 @@
 import { GraphQLServer } from "graphql-yoga";
 
-//Scalar typer
+//scalar types: Int, String, Boolean,
 
 //type definition (schema)
 const typeDefs = `
   type Query {
+    greeting(name: String): String!
    me: User!
    post: Post!
   }
@@ -29,6 +30,13 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
+    greeting(parent, args, ctx, info) {
+      console.log(args);
+      if (args.name) {
+        return `hello there ${args.name}`;
+      }
+      return "hello there!";
+    },
     me() {
       return {
         id: "123",
