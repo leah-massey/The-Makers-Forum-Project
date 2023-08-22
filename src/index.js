@@ -47,13 +47,24 @@ const posts = [
   },
 ];
 
+//demo comments data:
+
+const comments = [
+  { id: "7", text: "this sounds great" },
+  { id: "10", text: "I wish I could do that" },
+  { id: "11", text: "nice!" },
+  { id: "12", text: "can you explain more?" },
+];
+
 //type definition (schema)
 const typeDefs = `
   type Query {
     users(query: String): [User!]!
     posts(query: String): [Post!]!
+    comments: [Comment]!
     me: User!
     post: Post!
+    
   }
 
   type Post {
@@ -72,12 +83,20 @@ const typeDefs = `
     age: Int
     posts: [Post!]!
   }
+
+  type Comment {
+    id: ID!
+    text: String!
+  }
 `;
 
 //resolvers
 
 const resolvers = {
   Query: {
+    comments(parent, args, ctx, info) {
+      return comments;
+    },
     posts(parent, args, ctx, info) {
       if (!args.query) {
         return posts;
