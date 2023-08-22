@@ -74,7 +74,17 @@ const typeDefs = `
 const resolvers = {
   Query: {
     posts(parent, args, ctx, info) {
-      return posts;
+      if (!args.query) {
+        return posts;
+      }
+      return posts.filter((post) => {
+        if (
+          post.title.toLowerCase().includes(args.query.toLowerCase()) ||
+          post.body.toLowerCase().includes(args.query.toLowerCase())
+        ) {
+          return post;
+        }
+      });
     },
     users(parent, args, ctx, info) {
       if (!args.query) {
