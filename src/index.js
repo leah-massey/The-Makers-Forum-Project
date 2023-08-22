@@ -50,10 +50,10 @@ const posts = [
 //demo comments data:
 
 const comments = [
-  { id: "7", text: "this sounds great", author: "3" },
-  { id: "10", text: "I wish I could do that", author: "3" },
-  { id: "11", text: "nice!", author: "2" },
-  { id: "12", text: "can you explain more?", author: "1" },
+  { id: "7", text: "this sounds great", author: "3", post: "4" },
+  { id: "10", text: "I wish I could do that", author: "3", post: "7" },
+  { id: "11", text: "nice!", author: "2", post: "6" },
+  { id: "12", text: "can you explain more?", author: "1", post: "4" },
 ];
 
 //type definition (schema)
@@ -73,7 +73,6 @@ const typeDefs = `
     body: String!
     published: Boolean!
     author: User!
-
   }
 
   type User {
@@ -89,6 +88,7 @@ const typeDefs = `
     id: ID!
     text: String!
     author: User!
+    post: Post!
   }
 `;
 
@@ -142,6 +142,11 @@ const resolvers = {
     author(parent, args, ctx, info) {
       return users.find((user) => {
         return user.id == parent.author;
+      });
+    },
+    post(parent, args, ctx, info) {
+      return posts.find((post) => {
+        return post.id == parent.post;
       });
     },
   },
