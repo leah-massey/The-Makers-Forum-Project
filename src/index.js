@@ -191,13 +191,11 @@ const resolvers = {
       return newPost;
     },
     createComment(parent, args, ctx, info) {
-      const userExists = users.some((user) => {
-        return user.id === args.author;
-      });
+      const userExists = users.some((user) => user.id === args.author);
 
-      const postExistsAndPublished = posts.some((post) => {
-        return post.id === args.post && post.published;
-      });
+      const postExistsAndPublished = posts.some(
+        (post) => post.id === args.post && post.published
+      );
 
       if (!userExists) {
         throw new Error("user does not exist");
