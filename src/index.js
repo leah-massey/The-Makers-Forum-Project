@@ -29,18 +29,21 @@ const posts = [
     title: "Victorian Beach Time",
     body: "From sandcastles to fish and chips, promenades to pleasure piers, many of the things best associated with a trip to the British seaside have their roots in the Victorian summer holiday. However, while we take these seaside attractions for granted now – even looking back on them as old fashioned – many of them were considered revolutionary at the time, some even an affront to common decency. This led to some puritanical restrictions, but not even Victorian morality could hold back the tide of change that was rolling in.",
     published: true,
+    author: "1",
   },
   {
     id: "6",
     title: "King Knut",
     body: "As ruler of England, Denmark and Norway, King Cnut the Great consolidated his power to become leader of the North Sea Empire, demonstrating his leadership skills and fortitude during his reign. The fable about King Cnut trying to command the tide of the sea, written 100 years after his death by Henry of Huntingdon, still remains entrenched in English folklore today.",
     published: true,
+    author: "1",
   },
   {
     id: "7",
     title: "Jellied Eels",
     body: "Jellied eels are a traditional English dish that originated in the 18th century, primarily in the East End of London. The dish consists of chopped eels boiled in a spiced stock that is allowed to cool and set, forming a jelly. It is usually served cold and tatses pretty disgusting",
     published: false,
+    author: "2",
   },
 ];
 
@@ -58,6 +61,7 @@ const typeDefs = `
     title: String!
     body: String!
     published: Boolean!
+    author: User!
 
   }
 
@@ -109,6 +113,14 @@ const resolvers = {
         body: "The day I bought my bike, I ended up having quite an adventure...",
         published: false,
       };
+    },
+  },
+
+  Post: {
+    author(parent, args, ctx, info) {
+      return users.find((user) => {
+        return user.id === parent.author;
+      });
     },
   },
 };
