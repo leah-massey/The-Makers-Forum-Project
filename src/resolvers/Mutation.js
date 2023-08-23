@@ -184,6 +184,24 @@ const Mutation = {
 
     return deletedComment[0];
   },
+
+  updateComment(parent, args, { db }, info) {
+    const { id, data } = args;
+
+    const comment = db.comments.find((comment) => {
+      return comment.id === id;
+    });
+
+    if (!comment) {
+      throw new Error("This comment does not exist");
+    }
+
+    if (typeof data.text === "string") {
+      comment.text = data.text;
+    }
+
+    return comment;
+  },
 };
 
 export { Mutation as default };
