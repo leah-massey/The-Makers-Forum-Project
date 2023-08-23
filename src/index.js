@@ -247,6 +247,10 @@ const resolvers = {
         return post.id !== args.id;
       });
 
+      comments = comments.filter((comment) => {
+        return comment.post !== args.id;
+      });
+
       return deletedPosts[0];
     },
     createComment(parent, args, ctx, info) {
