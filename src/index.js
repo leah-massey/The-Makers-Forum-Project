@@ -24,7 +24,7 @@ const users = [
 ];
 
 //demo post data:
-const posts = [
+let posts = [
   {
     id: "4",
     title: "Victorian Beach Time",
@@ -53,7 +53,7 @@ const posts = [
 
 //demo comments data:
 
-const comments = [
+let comments = [
   { id: "7", text: "this sounds great", author: "3", post: "4" },
   { id: "10", text: "I wish I could do that", author: "3", post: "7" },
   { id: "11", text: "nice!", author: "2", post: "6" },
@@ -61,7 +61,7 @@ const comments = [
 ];
 
 //type definition (schema)
-const typeDefs = `
+let typeDefs = `
   type Query {
     users(query: String): [User!]!
     posts(query: String): [Post!]!
@@ -71,9 +71,10 @@ const typeDefs = `
   }
 
   type Mutation {
-    createUser(data: CreateUserInput): User!
-    createPost(data: CreatePostInput): Post!
-    createComment(data: CreateCommentInput): Comment!
+    createUser(data: CreateUserInput!): User!
+    deleteUser(id: ID!): User!
+    createPost(data: CreatePostInput!): Post!
+    createComment(data: CreateCommentInput!): Comment!
   }
 
   input CreateUserInput {
@@ -185,6 +186,32 @@ const resolvers = {
       users.push(user);
 
       return user;
+    },
+    deleteUser(parent, args, ctx, info) {
+      const userIndex = users.findIndex((user) => user.id === args.id);
+
+      if (userIndex === -1) {
+        throw new Error("User not found");
+      }
+
+      const deletedUsers = users.splice(userIndex, 1);
+
+      posts = posts.filter((post) => {
+        const match = post.author === args.id;
+
+        if (match) {
+          comments = comments.filter((comment) => {
+            return comment.post !== post.id;
+          });
+        }
+        return !match;
+      });
+
+      comments = comments.filter((comment) => {
+        return comment.author !== args.id;
+      });
+
+      return deletedUsers[0];
     },
     createPost(parent, args, ctx, info) {
       const userExists = users.some((user) => {
