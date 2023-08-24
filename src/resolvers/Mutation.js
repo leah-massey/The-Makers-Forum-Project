@@ -143,7 +143,7 @@ const Mutation = {
 
     return post;
   },
-  createComment(parent, args, { db }, info) {
+  createComment(parent, args, { db, pubsub }, info) {
     const userExists = db.users.some((user) => user.id === args.data.author);
 
     const postExistsAndPublished = db.posts.some(
@@ -158,14 +158,15 @@ const Mutation = {
       throw new Error("post does not exist or isn't published");
     }
 
-    const newComment = {
+    const comment = {
       id: uuidv4(),
       ...args.data,
     };
 
-    db.comments.push(newComment);
+    db.comments.push(comment);
+    pubsub.publish(`comment ${args.data.post}`, { comment });
 
-    return newComment;
+    return comment;
   },
   deleteComment(parent, args, { db }, info) {
     const commentIndex = db.comments.findIndex((comment) => {
